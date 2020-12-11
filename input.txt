@@ -1,0 +1,3 @@
+     float    int   string   int 
+     int 
+         while   else  float String
