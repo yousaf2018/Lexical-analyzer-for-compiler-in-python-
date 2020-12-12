@@ -1,3 +1,1 @@
-     float    int   string   int 
-     int 
-         while   else  float String
+int a = 50; int a = 40; float
