@@ -1,5 +1,6 @@
 #class for lexical analyze
 class lexical_analyzer():
+    line_number = 1
     input_character_list = []
     token_list = []
     #Function to generate tokens 
@@ -55,6 +56,8 @@ if __name__ == "__main__":
                     object1.input_character_list.clear()
                     break
                 break
+            if char == "\n":
+                object1.line_number = object1.line_number + 1
             if char == " " or char == "\n":
                 if len(object1.input_character_list) > 0:
                     object1.generate_token()
@@ -89,6 +92,8 @@ if __name__ == "__main__":
                 object1.token_list.append("<Cbar,>")
             elif char == "=":
                 char2 = file.read(1)
+                if char2 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char == char2:
                     object1.token_list.append("<relop,Equality>")
                 else:
@@ -96,6 +101,8 @@ if __name__ == "__main__":
                     signal = 1
             elif char == "<":
                 char2 = file.read(1)
+                if char2 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char2 == "=":
                     object1.token_list.append("relop,LE")
                 else:
@@ -103,11 +110,49 @@ if __name__ == "__main__":
                     signal = 1
             elif char == ">":
                 char2 = file.read(1)
+                if char2 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char2 == "=":
                     object1.token_list.append("relop,GE")
                 else:
                     object1.token_list.append("<GreaterThan,G>")
                     signal = 1
+            elif ord(char) >= 48 and ord(char) <= 57:
+                temp = []
+                temp.append(char)
+                dot_counter = 0
+                checking = 0
+                while 1:
+                    char = file.read(1)
+                    if char == "\n":
+                        object1.line_number = object1.line_number + 1
+                    if not char:
+                        break
+                    if char == ";":
+                        if checking == 0:
+                            object1.token_list.append(temp)
+                            object1.token_list.append("<SemiColon,>")
+                            break
+                        else:
+                            print(f"Error in line {object1.line_number} due to unvalid number")
+                            object1.token_list.append("<SemiColon,>")
+                            break
+                    elif char == " " or char == "\n":
+                        if checking == 0:
+                            object1.token_list.append(temp)
+                            break
+                        else:
+                            print(f"Error in line {object1.line_number} due to unvalid number")
+                            break
+                    elif ord(char) >= 48 and ord(char) <= 57 or ord(char) == 46:
+                        if ord(char) == 46:
+                            print("Hi")
+                            dot_counter = dot_counter + 1
+                            if dot_counter > 1:
+                                checking = 1
+                        temp.append(char)
+                    else:
+                        checking = 1
             else:
                 if char == " " or char == "\n":
                     pass
@@ -170,6 +215,8 @@ if __name__ == "__main__":
                 signal = 0
             elif char2 == "=":
                 char3 = file.read(1)
+                if char3 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char2 == char3:
                     object1.token_list.append("<relop,Equality>")
                     signal = 0
@@ -178,6 +225,8 @@ if __name__ == "__main__":
                     signal = 0
             elif char2 == "<":
                 char3 = file.read(1)
+                if char3 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char3 == "=":
                     object1.token_list.append("relop,LE")
                     signal = 0 
@@ -186,6 +235,8 @@ if __name__ == "__main__":
                     signal = 0
             elif char2 == ">":
                 char3 = file.read(1)
+                if char3 == "\n":
+                    object1.line_number = object1.line_number + 1
                 if char2 == "=":
                     object1.token_list.append("relop,GE")
                     signal = 0

@@ -1,1 +1,1 @@
-int a = 50; int a = 40; float
+int a = 10o0;
