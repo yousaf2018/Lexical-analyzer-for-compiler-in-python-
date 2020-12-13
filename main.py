@@ -3,6 +3,8 @@ class lexical_analyzer():
     line_number = 1
     input_character_list = []
     token_list = []
+    Number_table = []
+    Error_table = []
     #Function to generate tokens 
     def generate_token(self):
         #checking if is it keyword
@@ -127,26 +129,60 @@ if __name__ == "__main__":
                     if char == "\n":
                         object1.line_number = object1.line_number + 1
                     if not char:
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            break
+                        else:
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
+                            break
                         break
                     if char == ";":
-                        if checking == 0:
-                            object1.token_list.append(temp)
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            object1.token_list.append("<SemiColon,>")
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
                             object1.token_list.append("<SemiColon,>")
                             break
                         else:
-                            print(f"Error in line {object1.line_number} due to unvalid number")
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
                             object1.token_list.append("<SemiColon,>")
                             break
                     elif char == " " or char == "\n":
-                        if checking == 0:
-                            object1.token_list.append(temp)
+                        print("Hi")
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
                             break
                         else:
-                            print(f"Error in line {object1.line_number} due to unvalid number")
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
                             break
                     elif ord(char) >= 48 and ord(char) <= 57 or ord(char) == 46:
                         if ord(char) == 46:
-                            print("Hi")
                             dot_counter = dot_counter + 1
                             if dot_counter > 1:
                                 checking = 1
@@ -243,6 +279,84 @@ if __name__ == "__main__":
                 else:
                     object1.token_list.append("<GreaterThan,G>")
                     signal = 0
+            elif ord(char2) >= 48 and ord(char2) <= 57:
+                temp = []
+                temp.append(char2)
+                dot_counter = 0
+                checking = 0
+                while 1:
+                    char2 = file.read(1)
+                    if char2 == "\n":
+                        object1.line_number = object1.line_number + 1
+                    if not char2:
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            signal = 0
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            signal = 0
+                            break
+                        else:
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
+                            signal = 0
+                            break
+                        break
+                    if char2 == ";":
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            object1.token_list.append("<SemiColon,>")
+                            signal = 0 
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            object1.token_list.append("<SemiColon,>")
+                            signal = 0
+                            break
+                        else:
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
+                            object1.token_list.append("<SemiColon,>")
+                            signal = 0
+                            break
+                    elif char2 == " " or char2 == "\n":
+                        if checking == 0 and dot_counter == 0:
+                            temp = list(map(int,temp))
+                            temp = int("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            signal = 0
+                            break
+                        elif checking == 0 and dot_counter == 1:
+                            temp = list(map(str,temp))
+                            temp = float("".join(map(str, temp)))
+                            object1.Number_table.append([len(object1.Number_table),temp])
+                            object1.token_list.append(f"<Number,{len(object1.Number_table)}>")
+                            signal = 0
+                            break
+                        else:
+                            object1.Error_table.append(f"Error in line {object1.line_number} due to invalid number") 
+                            signal = 0
+                            break
+                    elif ord(char2) >= 48 and ord(char2) <= 57 or ord(char2) == 46:
+                        if ord(char2) == 46:
+                            dot_counter = dot_counter + 1
+                            if dot_counter > 1:
+                                checking = 1
+                        temp.append(char2)
+                    else:
+                        checking = 1
             else:
                 if char2 == " " or char2 == "\n":
                     signal = 0
@@ -252,3 +366,5 @@ if __name__ == "__main__":
                     signal = 0
     file.close()
     print(object1.token_list)
+    print(object1.Number_table)
+    print(object1.Error_table)
