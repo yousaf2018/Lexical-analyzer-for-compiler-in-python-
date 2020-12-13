@@ -1,1 +1,19 @@
-String name = "Mahmood"
+#include<stdio.h>
+int main() {
+      double first, second, temp;
+      printf("Enterfirstnumber:");
+      scanf("%lf", &first);
+      printf("Entersecondnumber:");
+      scanf("%lf", &second);
+      String name = "Mahmood 
+      String name = "Mahmood"
+      // Value of first is assigned to temp
+      temp = first;
+
+      // Value of second is assigned to first
+      first = second;
+
+      // Value of temp (initial value of first) is assigned to second
+      second = temp;
+      return 0;
+}
